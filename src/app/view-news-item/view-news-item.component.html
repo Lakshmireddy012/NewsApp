@@ -1,7 +1,10 @@
 <ion-card *ngFor="let item of newsList">
   <ion-card-header>
-    <ion-card-title>{{
+    <ion-card-title *ngIf="item?.title?.includes('-')">{{
       item?.title?.substring(0, item?.title?.lastIndexOf("-"))
+    }}</ion-card-title>
+    <ion-card-title *ngIf="!item?.title?.includes('-')">{{
+      item?.title
     }}</ion-card-title>
     <ion-card-subtitle>{{ item?.description }}</ion-card-subtitle>
   </ion-card-header>
@@ -12,15 +15,22 @@
       <ion-avatar style="width: 20px; height: 20px;">
         <img *ngIf="favIconsUrl + item?.url" [src]="favIconsUrl + item?.url" />
       </ion-avatar>
-      <span style="padding-left: 10px">{{
-        item?.title?.substring(
-          item?.title?.lastIndexOf("-") + 1,
-          item?.title?.length
-        )
-      }}</span>
-      <span style="padding-left: 10px"
-        >{{ publishedTime(item?.publishedAt) }} Hours ago</span
-      >
+      <p style="padding-left: 10px;display: inline;" *ngIf="item?.title?.includes('-')">
+        {{
+          item?.title?.substring(
+            item?.title?.lastIndexOf("-") + 1,
+            item?.title?.length
+          )
+        }}
+      </p>
+      <p style="padding-left: 10px;display: inline;" *ngIf="!item?.title?.includes('-')">
+        {{
+          item?.source?.name
+        }}
+      </p>
+      <p style="padding-left: 10px;display: inline;">
+        {{ publishedTime(item?.publishedAt) }} Hours ago
+      </p>
       <ion-icon
         style="padding-left: 10px"
         name="eye"

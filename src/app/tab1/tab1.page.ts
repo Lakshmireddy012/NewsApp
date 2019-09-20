@@ -7,7 +7,7 @@ import { NavController } from '@ionic/angular';
   styleUrls: ["tab1.page.scss"]
 })
 export class Tab1Page implements OnInit{
-  requestParams:any ={};
+  requestParams:any ={category: "general"};
   constructor(public navCtrl: NavController) {
     
   }

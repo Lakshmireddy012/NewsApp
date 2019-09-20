@@ -14,7 +14,9 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
-  }
+  },
+  { path: 'tab6', loadChildren: './tab6/tab6.module#Tab6PageModule' },
+  { path: 'tab7', loadChildren: './tab7/tab7.module#Tab7PageModule' }
 ];
 
 @NgModule({

@@ -8,6 +8,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import 'hammerjs';
+import { Subject } from 'rxjs';
 
 @Directive({
   selector: '[appSwipetab]',
@@ -15,7 +16,7 @@ import 'hammerjs';
 
 export class SwipeTabDirective implements OnInit, OnDestroy {
   @Output() tabChange = new EventEmitter();
-
+  tabListData: Subject<string> = new Subject();
   private currentTabIndex = 0;
   private tabCount = 0;
   private swipeCoords: [number, number];
@@ -28,22 +29,32 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
       public _el: ElementRef,
       private _renderer: Renderer2
   ) {
-      console.log('[SwipeTabDirective] constructor');
+      
   }
 
   ngOnInit() {
-      const tabsList = this._el.nativeElement.querySelectorAll('ion-tab-button');
+    this.loadTabList();
+      this.tabListData.subscribe((tabs)=>{
+        const tabsList:any=tabs;
+        for (let i = 0, len = tabsList.length; i < len; i += 1) {
+            this.tabNames.push(tabsList[i].tab);
+        }
+        this.tabCount = this.tabNames.length - 1;
+      });
+  }
 
-      for (let i = 0, len = tabsList.length; i < len; i += 1) {
-          this.tabNames.push(tabsList[i].tab);
-      }
-      this.tabCount = this.tabNames.length - 1;
-      console.log('[SwipeTabDirective] ngOnInit, tabNames: ', this.tabNames);
+  loadTabList(){
+    const tabsList = this._el.nativeElement.querySelectorAll('ion-tab-button');
+    if(tabsList.length==0){
+        setTimeout(() => {
+            this.loadTabList()
+        }, 200);
+    }else{
+        this.tabListData.next(tabsList);
+    }
   }
 
   onTabInitialized(tabName: string): void {
-      console.log('[SwipeTabDirective] onTabInitialized, tabName: ', tabName);
-
       this.currentTabIndex = this.tabNames.indexOf(tabName);
 
       const currentTabName = `app-${tabName}`;
@@ -53,9 +64,7 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
           throw new Error('Make sure tab selector has app prefix');
       } else {
           const content = elem.getElementsByTagName('ion-content')[0];
-
           if (content.querySelector('.swipe-area') === null) {
-              console.log('[SwipeTabDirective] adding swipe area');
               this.createWrapperDiv(content);
           }
       }
@@ -94,7 +103,6 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
   }
 
   deviceSwipeHandler(event: TouchEvent, status: string): void {
-      console.log('[SwipeTabDirective] deviceSwipeHandler, status: ', status);
       const coords: [number, number] = [event.changedTouches[0].pageX, event.changedTouches[0].pageY];
       const time = new Date().getTime();
 
@@ -117,7 +125,6 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
   }
 
   browserSwipeHandler(event) {
-      console.log('[SwipeTabDirective] browserSwipeHandler, direction: ', event.direction);
       switch (event.direction) {
           case 2:
               this.moveForward();
@@ -133,7 +140,6 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
   }
 
   moveForward(): void {
-      console.log('[SwipeTabDirective] moveForward');
       if (this.currentTabIndex < this.tabCount) {
           this.currentTabIndex++;
           this.tabChange.emit(this.tabNames[this.currentTabIndex]);
@@ -141,7 +147,6 @@ export class SwipeTabDirective implements OnInit, OnDestroy {
   }
 
   moveBackward(): void {
-      console.log('[SwipeTabDirective] moveBackward');
       if (this.currentTabIndex > 0) {
           this.currentTabIndex--;
           this.tabChange.emit(this.tabNames[this.currentTabIndex]);
