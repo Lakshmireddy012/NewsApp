@@ -1,7 +1,8 @@
-import { Component , ViewChild, ElementRef, OnInit} from '@angular/core';
+import { Component , ViewChild, OnInit} from '@angular/core';
 import { IonTabs, Platform } from '@ionic/angular';
 import { SwipeTabDirective } from '../directive/swipe-tab.directive';
 import { CommonSharedService } from '../services/common-shared.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomePage implements OnInit{
   requestParams={};
   isSearchPerformed=false;
   public devWidth = this.platform.width();
-  constructor(public platform: Platform, private commonService: CommonSharedService, private elementRef: ElementRef) {
+  constructor(public platform: Platform, private commonService: CommonSharedService,private router: Router ) {
     var savedValue=localStorage.getItem("savedNewsCategories");
     if(savedValue){
       this.newsCategories=JSON.parse(savedValue);

@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Inject } from "@angular/core";
 import { CommonSharedService } from "../services/common-shared.service";
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: "app-list",
@@ -9,12 +10,17 @@ import { CommonSharedService } from "../services/common-shared.service";
 export class ListPage implements OnInit {
   newsCategories: any;
   numberofNews=10;
-  constructor(private commonService: CommonSharedService) {
+  public isToggled: boolean;
+  constructor(private commonService: CommonSharedService,@Inject(DOCUMENT) private document: Document) {
     var savedValue=localStorage.getItem("savedNewsCategories");
     if(savedValue){
       this.newsCategories=JSON.parse(savedValue);
     }else{
       this.newsCategories=this.commonService.newsCategories;
+    }
+    var nightMode=JSON.parse(localStorage.getItem("nightMode"));
+    if(nightMode){
+      this.isToggled=nightMode;
     }
   }
 
@@ -22,6 +28,7 @@ export class ListPage implements OnInit {
   saveSettings() {
     localStorage.setItem("savedNewsCategories",JSON.stringify(this.newsCategories));
     localStorage.setItem("numberofNews",JSON.stringify(this.numberofNews));
+    localStorage.setItem("nightMode",JSON.stringify(this.isToggled));
   }
 
   onItemChanged(event){
@@ -37,5 +44,13 @@ export class ListPage implements OnInit {
   }
   numberOfNewsChanged(event){
 
+  }
+
+  ionChange(){
+    if(this.isToggled){
+      this.document.body.classList.add('dark');
+    }else{
+      this.document.body.classList.remove('dark');
+    }
   }
 }

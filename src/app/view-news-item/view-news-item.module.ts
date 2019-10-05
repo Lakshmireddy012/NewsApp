@@ -5,13 +5,17 @@ import { IonicModule } from '@ionic/angular';
 import { ViewNewsItemComponent } from './view-news-item.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { LazyLoadImageModule, intersectionObserverPreset } from 'ng-lazyload-image';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HttpClientModule
+    HttpClientModule,
+    LazyLoadImageModule.forRoot({
+      preset: intersectionObserverPreset // <-- tell LazyLoadImage that you want to use IntersectionObserver
+    })
   ],
   declarations: [ViewNewsItemComponent],
   exports: [ViewNewsItemComponent],

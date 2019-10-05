@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, ViewChild } from "@angular/core";
 import { CommonSharedService } from "../services/common-shared.service";
-import { IonInfiniteScroll } from "@ionic/angular";
+import { IonInfiniteScroll, IonRefresher } from "@ionic/angular";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
 @Component({
@@ -10,13 +10,25 @@ import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 })
 export class ViewNewsItemComponent implements OnInit, OnChanges {
   newsList = [];
-  favIconsUrl = "http://www.google.com/s2/favicons?domain=";
+  favIconsUrl = "https://www.google.com/s2/favicons?domain=";
   @ViewChild(IonInfiniteScroll, { static: false })
   infiniteScroll: IonInfiniteScroll;
   @Input() requestParams;
   @Input() isSearch;
   totalNews;
   viewNewsSourceFlag = false;
+
+  @ViewChild(IonRefresher, { static: false})
+   refresher: IonRefresher;
+
+   ionViewDidEnter() {
+      this.refresher.disabled = false;
+   }
+
+   ionViewWillLeave() {
+      this.refresher.disabled = true;
+   }
+   
   ngOnInit() {
     
   }
@@ -98,6 +110,16 @@ export class ViewNewsItemComponent implements OnInit, OnChanges {
       this.requestParams.pageSize = JSON.parse(numberofNews);
     } else {
       this.requestParams.pageSize = 10;
+    }
+  }
+
+  doRefresh(event) {
+    this.requestParams.page = 1;
+    this.newsList=[];
+    if (this.isSearch == undefined) {
+      this.getNews(event);
+    } else {
+      this.getSearchedNews(event);
     }
   }
 }

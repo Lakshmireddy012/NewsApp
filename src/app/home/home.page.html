@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-content *ngIf="isSearchPerformed==false">
+  <ion-content  [hidden]="!isSearchPerformed==false">
     <ion-tabs
       appSwipetab
       (ionTabsDidChange)="ionTabsDidChange($event)"
@@ -26,17 +26,15 @@
       </ion-tab-bar>
     </ion-tabs>
   </ion-content>
-  <ion-content *ngIf="isSearchPerformed==true">
-      <ion-card class="cardcol" style="border-radius:15px">
-         <ion-card-header>
-          <ion-item class="close-btn" (click)="close();">
-              Search Results
-              <ion-icon name="close-circle" slot="end"></ion-icon>
-              </ion-item>
-        </ion-card-header>
-        <ion-card-content style="padding: 0px">
+  <ng-container *ngIf="isSearchPerformed==true">
+      <ion-title>
+              <ion-item class="close-btn" (click)="close();">
+                  Search Results
+                  <ion-icon name="close-circle" slot="end"></ion-icon>
+                  </ion-item>
+            </ion-title>
+        <ion-content style="z-index: 0;">
             <app-view-news-item  [requestParams]="requestParams" [isSearch]="true"></app-view-news-item>
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
+        </ion-content>
+    </ng-container>
 </ion-content>

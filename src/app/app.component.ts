@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -27,8 +28,13 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    @Inject(DOCUMENT) private document: Document
   ) {
     this.initializeApp();
+    var nightMode=localStorage.getItem("nightMode");
+    if(JSON.parse(nightMode)){
+      this.document.body.classList.add('dark');
+    }
   }
 
   initializeApp() {

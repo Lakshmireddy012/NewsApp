@@ -1,21 +1,32 @@
 <ion-header translucent>
     <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
       <ion-title>Settings</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-content fullscreen>
     <ion-list class="ion-no-margin ion-no-padding">
         <ion-item>
+            <ion-icon slot="start" name="keypad"></ion-icon>
           <ion-label position="stacked">News items to load at once</ion-label>
           <ion-input required type="number" [(ngModel)]="numberofNews"></ion-input>
         </ion-item>
         <ion-item>
+            <ion-icon slot="start" name="albums"></ion-icon>
             <ion-label>Categories</ion-label>
             <ion-select  interface ="popover" (ionChange)="onItemChanged($event)" multiple>
               <ion-select-option [value]="i" [selected]="item.selected" *ngFor="let item of newsCategories; let i=index">{{item.type}}</ion-select-option>
             </ion-select>
           </ion-item>
+          <ion-item lines="full">
+                <ion-icon slot="start" name="moon"></ion-icon>
+                <ion-label>
+                  Night Mode 
+                </ion-label>
+                <ion-toggle [(ngModel)]="isToggled" id="themeToggle" slot="end" (ionChange)="ionChange()"></ion-toggle>
+            </ion-item>
       </ion-list>
 
       <div class="ion-padding">
