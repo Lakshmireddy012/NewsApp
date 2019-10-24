@@ -12,16 +12,14 @@ export class ListPage implements OnInit {
   numberofNews=10;
   public isToggled: boolean;
   constructor(private commonService: CommonSharedService,@Inject(DOCUMENT) private document: Document) {
+    //this.isToggled=this.commonService.nightMode;
     var savedValue=localStorage.getItem("savedNewsCategories");
     if(savedValue){
       this.newsCategories=JSON.parse(savedValue);
     }else{
       this.newsCategories=this.commonService.newsCategories;
     }
-    var nightMode=JSON.parse(localStorage.getItem("nightMode"));
-    if(nightMode){
-      this.isToggled=nightMode;
-    }
+    this.isToggled=this.commonService.nightMode;
   }
 
   ngOnInit() {}
@@ -47,6 +45,7 @@ export class ListPage implements OnInit {
   }
 
   ionChange(){
+    this.commonService.nightMode=this.isToggled;
     if(this.isToggled){
       this.document.body.classList.add('dark');
     }else{

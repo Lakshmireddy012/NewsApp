@@ -103,7 +103,7 @@ import { SwipeTabDirective } from "../directive/swipe-tab.directive";
       }
     ])
   ],
-  declarations: [HomePage, SwipeTabDirective],
+  declarations: [HomePage,SwipeTabDirective],
   exports: []
 })
 export class HomePageModule {}

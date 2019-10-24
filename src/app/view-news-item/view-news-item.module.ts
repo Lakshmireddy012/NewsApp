@@ -6,6 +6,7 @@ import { ViewNewsItemComponent } from './view-news-item.component';
 import { HttpClientModule } from '@angular/common/http';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { LazyLoadImageModule, intersectionObserverPreset } from 'ng-lazyload-image';
+import { ScoreCardComponent } from '../score-card/score-card.component';
 
 @NgModule({
   imports: [
@@ -17,8 +18,8 @@ import { LazyLoadImageModule, intersectionObserverPreset } from 'ng-lazyload-ima
       preset: intersectionObserverPreset // <-- tell LazyLoadImage that you want to use IntersectionObserver
     })
   ],
-  declarations: [ViewNewsItemComponent],
-  exports: [ViewNewsItemComponent],
+  declarations: [ViewNewsItemComponent,ScoreCardComponent],
+  exports: [ViewNewsItemComponent,ScoreCardComponent],
   providers: [
     InAppBrowser
   ]
